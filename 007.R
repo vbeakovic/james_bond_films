@@ -59,11 +59,15 @@ bond.films <- bond.wiki %>%
   html_table(fill = TRUE) 
 
 # lots of cleaning to work to be done now...
-bond.films %>% 
-  # make clean column names (replace space with dot)
-  setNames(make.names(names(bond.films), unique = TRUE)) %>% 
-  # remove first and last line (inner-table headers)
-  head(-1) %>% tail(-1) %>% 
+#names(bond.films) <- make.names(names(bond.films), unique = TRUE)
+# remove first and last line (inner-table headers)
+#bond.films <- head(bond.films, -1)
+#bond.films <- tail(bond.films, -1)
+bond.films %<>% 
+        # make clean column names (replace space with dot)
+        setNames(make.names(names(bond.films), unique = TRUE)) %>% 
+        # remove first and last line (inner-table headers)
+        head(-1) %>% tail(-1) %>% 
   mutate(
     # clean wiki-related data import problems
     Title = f.clean.titles(Title),
@@ -124,6 +128,9 @@ bond.dta %>% ggplot()+
   scale_colour_continuous()
 ggsave(file="bond-bare-plot.png")
 
+plot(x = bond.dta$Budget.2005.adj, y = bond.dta$Box.office.2005.adj)
+
+
 # http://stackoverflow.com/questions/9968975/using-ggplot2-in-r-how-do-i-make-the-background-of-a-graph-different-colours-in
 ## get Bond actor year grouping for rectangling
 actor.grp <- bond.dta %>% 
@@ -151,7 +158,7 @@ actor.grp <- bond.dta %>%
 ggplot() + 
   # place geom_rect first, then other geoms will "write over" the rectangles
   geom_rect(data = actor.grp, aes(xmin = yearmin, xmax = yearmax, 
-                                  ymin = -Inf, ymax = Inf, 
+                                  ymin = 0, ymax = 1000, 
                                   fill = Bond.actor), alpha = 0.3)+
   # write actor names on rectangles
   geom_text(data = actor.grp, aes(x = yearmin, 
@@ -185,6 +192,9 @@ ggplot() +
        x="", y="Box office earnings (in 2005 mil. dollars)")
 # export to size that fits everything into graph, use golden ratio
 ggsave(file="bond-full.png", width = 30, height = 30/((1+sqrt(5))/2), units = "cm")
+
+
+
 
 
 
