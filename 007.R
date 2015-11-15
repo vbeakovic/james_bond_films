@@ -12,7 +12,7 @@ library(tidyr)
 #library(data.table)
 
 # Define your workspace: "X:/xxx/"
-wd <- "D:/github/james_bond_films/"
+wd <- "~/Projekti/dev/james_bond_films"
 setwd(wd)
 
 ## functions needed
@@ -42,8 +42,8 @@ f.retrieve.initial.numbers <- function(x) {
 
 
 ## retrieve wikipedia James Bond films page
-#bond.url <-  "https://en.wikipedia.org/w/index.php?title=List_of_James_Bond_films&oldid=688916363"
-bond.url <- "D:/github/james_bond_films/List of James Bond films - Wikipedia, the free encyclopedia.htm"
+bond.url <-  "https://en.wikipedia.org/wiki/List_of_James_Bond_films"
+#bond.url <- "D:/github/james_bond_films/List of James Bond films - Wikipedia, the free encyclopedia.htm"
 
 
 ## read the page into R
@@ -59,7 +59,7 @@ bond.films <- bond.wiki %>%
   html_table(fill = TRUE) 
 
 # lots of cleaning to work to be done now...
-bond.films %<>% 
+bond.films %>% 
   # make clean column names (replace space with dot)
   setNames(make.names(names(bond.films), unique = TRUE)) %>% 
   # remove first and last line (inner-table headers)
